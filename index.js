@@ -81,12 +81,9 @@ server.post('/drug-cat', (req, resp) => {
     
           const category  = req.body.category;
 
-          const filtered = drugs.filter(drug => drug.category === category);
-          return filtered,
-        resp.json({
-            message: "Drug category Analgesic",
-            category
-        })
+            resp.json(
+          drugs.filter(drug => drug.category === category)
+      )
 })
 
 
@@ -132,9 +129,8 @@ server.get('/drug-prescript', (req, resp) => {
   server.post('/manufacturer-count', (req, resp) => {
     
     const  manufacturer  = req.body.manufacturer;
-     const count =  drugs.filter(drug => drug.manufacturer === manufacturer).length;
-     return count,
-    resp.json({ manufacturer, count })
+      const count = drugs.filter(drug => drug.manufacturer === manufacturer)
+    resp.json(count.length)
   })
 
   // 10
