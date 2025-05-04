@@ -58,9 +58,11 @@ const drugs = [
 
    // 1
 server.get('/anti', (req, resp) => {
+
     const antibio = drugs.filter((drug) =>{
-      return drug.category === "Antibiotic"
+      return drug.category == "Antibiotic"
     })
+    
     resp.json(antibio)
 })
 
@@ -81,46 +83,51 @@ server.post('/drug-cat', (req, resp) => {
     
           const category  = req.body.category;
 
-            resp.json(
-          drugs.filter(drug => drug.category === category)
-      )
+          if(!category){
+            return resp.json({message:"Please enter a category....."})
+          }
+
+          const drugcat = drugs.filter(drug =>{return drug.category == category})
+
+            resp.json(drugcat)
+      
 })
 
 
 //4
 
 server.get('/drug-manufacturers', (req, resp) => {
-    const result = drugs.map(drug => ({
+    const result = drugs.map((drug) => { return {
       name: drug.name,
-      manufacturer: drug.manufacturer
-    }))
+      manufacturer: drug.manufacturer}
+    })
     resp.json(result)
   })
 
 // 5
 server.get('/drug-prescript', (req, resp) => {
-    const prescriptionDrugs = drugs.filter(drug => drug.isPrescriptionOnly)
-    resp.json(prescriptionDrugs)
+    const prescriptionDrugs = drugs.filter((drug) =>{return drug.isPrescriptionOnly == true })
+              resp.json(prescriptionDrugs)
   })
 
 
   // 6
   server.get('/drug-formatted', (req, resp) => {
-    const formatted = drugs.map(drug => `Drug: ${drug.name} - ${drug.dosageMg}mg`)
-    resp.json(formatted);
+    const formatted = drugs.map((drug) => {return `Drug: ${drug.name} - ${drug.dosageMg}mg`})
+    resp.json(formatted)
   })
 
 
   // 7
   server.get('/low-stock', (req, resp) => {
-    const lowStock = drugs.filter(drug => drug.stock < 50);
+    const lowStock = drugs.filter((drug) =>{ drug.stock < 50});
     resp.json(lowStock)
   })
 
   // 8
 
   server.get('/non-prescription', (req, resp) => {
-    const nonPrescription = drugs.filter(drug => !drug.isPrescriptionOnly);
+    const nonPrescription = drugs.filter((drug) => {!drug.isPrescriptionOnly});
     resp.json(nonPrescription)
   })
 
@@ -129,7 +136,7 @@ server.get('/drug-prescript', (req, resp) => {
   server.post('/manufacturer-count', (req, resp) => {
     
     const  manufacturer  = req.body.manufacturer;
-      const count = drugs.filter(drug => drug.manufacturer === manufacturer)
+      const count = drugs.filter((drug) => {return drug.manufacturer === manufacturer})
     resp.json(count.length)
   })
 
@@ -137,7 +144,7 @@ server.get('/drug-prescript', (req, resp) => {
    server.get('/drug-analgesics', (req, resp) => {
     let analgesicCount = 0;
           drugs.forEach((drug) => {
-            if (drug.category === "Analgesic") analgesicCount++
+            if (drug.category == "Analgesic") {analgesicCount++}
           })
     resp.json({ analgesicCount });
   });
